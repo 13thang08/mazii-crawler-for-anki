@@ -1,6 +1,5 @@
 const csv2json = require('csvtojson');
 const fs = require('fs');
-const axios = require('axios');
 const Json2csvParser = require('json2csv').Parser;
 const promisify = require('util').promisify;
 const sleep = promisify(setTimeout);
@@ -8,9 +7,8 @@ const writeFile = promisify(fs.writeFile);
 const appendFile = promisify(fs.appendFile);
 const unlink = promisify(fs.unlink);
 const endOfLine = require('os').EOL;
-const { throwError, from, of, Observable } = require('rxjs');
-const { catchError, retry, tap, retryWhen, delay, take } = require('rxjs/operators');
 const get = require('get-value');
+const helper = require('./helper');
 
 const input_file = "kanji_list.csv";
 const output_file = "output.csv";
@@ -110,11 +108,9 @@ async function main() {
 }
 
 async function getDetail(word) {
+  let url = `https://mazii.net/api/mazii/${encodeURI(word)}/10`
   try {
-    let response = await getDetailObservable(word).pipe(
-      // retryWhen(errors => errors.pipe(delay(randomIntFromInterval(2000, 10000)), take(20)) )
-      retry(30)
-    ).toPromise();
+    let response = await helper.toPromise(helper.getRequest(url));
 
     return response
   } catch(e) {
@@ -123,51 +119,21 @@ async function getDetail(word) {
   }
 }
 
-function getDetailObservable(word) {
-  let url = `https://mazii.net/api/mazii/${encodeURI(word)}/10`
-  return Observable.create( ( observer ) => {
-    console.log(`Requesting...: ${url}`);
-    axios.get(url)
-    .then( ( response ) => {
-      observer.next( response.data );
-      observer.complete();
-    } )
-    .catch( ( error ) => {
-      observer.error( error );
-    } );
-  });
-}
-
 async function getMean(wordId) {
+  let url = 'https://api.mazii.net/api/get-mean';
+  let data = {
+    wordId,
+    type: "kanji",
+    dict: "javi"
+  };
   try {
-    let response = await getMeanObservable(wordId).pipe(
-      // retryWhen(errors => errors.pipe(delay(randomIntFromInterval(2000, 10000)), take(20)) )
-      retry(30)
-    ).toPromise();
+    let response = await helper.toPromise(helper.postRequest(url, data));
 
     return response
   } catch(e) {
     // console.log(e);
     console.log(`Error when processing: ${wordId}`)
   }
-}
-
-function getMeanObservable(wordId) {
-  return Observable.create( ( observer ) => {
-    console.log(`Requesting...: ${wordId}`);
-    axios.post('https://api.mazii.net/api/get-mean', {
-      wordId,
-      type: "kanji",
-      dict: "javi"
-    })
-    .then( ( response ) => {
-      observer.next( response.data );
-      observer.complete();
-    } )
-    .catch( ( error ) => {
-      observer.error( error );
-    } );
-  });
 }
 
 async function getCsvRow(word) {
