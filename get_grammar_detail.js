@@ -113,6 +113,8 @@ async function main() {
 
   }
 
+  await appendFile(config.grammar_detail_file, fields.join(","));
+
   let inputs = await csv2json().fromFile(config.grammar_ids_file);
 
   for(let i = 0; i < inputs.length; i++) {
