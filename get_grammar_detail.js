@@ -102,8 +102,26 @@ async function appendCsvFile(data) {
   await appendFile(config.grammar_detail_file, csv);
 }
 
+async function appendCsvArr(arr) {
+  const json2csvParser = new Json2csvParser({ fields, header: false });
+  const csv = json2csvParser.parse(arr);
+  await appendFile(config.grammar_detail_file, csv);
+}
+
 function trim(str) {
-  if (str) { return str.trim() }
+  if (str) { return str.trim().replace(/(?:\r\n|\r|\n)/g, '<br>') }
+}
+
+function compare(lhs, rhs) {
+  if (lhs.level && rhs.level) {
+    if (lhs.level == rhs.level) {
+      return 0;
+    } else {
+      return lhs.level < rhs.level ? -1 : 1;
+    }
+  } else {
+    return 0;
+  }
 }
 
 async function main() {
@@ -113,17 +131,22 @@ async function main() {
 
   }
 
-  await appendFile(config.grammar_detail_file, fields.join(","));
+  // await appendFile(config.grammar_detail_file, fields.join(","));
 
   let inputs = await csv2json().fromFile(config.grammar_ids_file);
+
+  let arr = [];
 
   for(let i = 0; i < inputs.length; i++) {
     let input = inputs[i];
     let id = input.id;
     let row = await getCsvRow(id);
-    await appendCsvFile(row);
+    arr.push(row);
     console.log(`progress ${i+1}/${inputs.length}`);
   }
+
+  arr.sort(compare);
+  await appendCsvArr(arr);
 }
 
 main();
