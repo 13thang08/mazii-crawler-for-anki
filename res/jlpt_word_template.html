@@ -1,0 +1,131 @@
+<style type="text/css">
+.card {
+ font-family: arial;
+ font-size: 18px;
+ color: black;
+ background-color: white;
+}
+
+div {
+    background-size: contain;
+    font-family: helvetica neue,Helvetica,Arial,sans-serif;
+}
+
+.box-main-word {
+    color: #4f4f4f;
+}
+
+
+.main-word {
+    font-weight: 700;
+    font-size: 24px;
+    float: left;
+    margin-right: 80px;
+    line-height: 32px;
+    min-height: 32px;
+    margin-bottom: 4px;
+}
+
+.cl-red-main {
+    color: #e53c20;
+}
+
+.phonetic-word {
+    clear: both;
+    font-style: normal;
+    font-size: 16px;
+    float: left;
+    line-height: 32px;
+    height: 32px;
+}
+
+.cl-content {
+    color: #4f4f4f;
+}
+
+.mean-fr-word[_ngcontent-c18] {
+    padding-top: 8px;
+    font-size: 18px;
+    clear: both;
+    padding-bottom: 8px;
+}
+
+.cl-blue {
+    color: #3367d6;
+}
+
+.type-word[_ngcontent-c18] {
+    clear: both;
+    font-size: 15px;
+    margin-top: 12px;
+    font-weight: 200;
+}
+
+.cl-red {
+    color: #ff5837;
+}
+
+.example-mean-word[_ngcontent-c19] {
+    margin-top: 4px;
+}
+
+.cl-content {
+    color: #4f4f4f;
+}
+
+.example-container {
+    margin-bottom: 16px;
+    margin-top: 8px;
+}
+
+.content-example, .tab-word .content-example {
+    margin: 0 20px;
+}
+</style>
+
+
+<div _ngcontent-c18="" class="box-main-word">
+  <div _ngcontent-c18="" class="main-word cl-red-main"> {{word}} </div>
+  <!---->
+  <div _ngcontent-c18="" class="phonetic-word japanese-char cl-content"> {{phonetic}} </div>
+  <!----><!---->
+  <!---->
+  {{#mean_0}}
+  <div _ngcontent-c18="" class="mean-detail-range">
+    {{#kind_0}}<div _ngcontent-c18="" class="type-word cl-red">☆ {{kind_0}} </div>{{/kind_0}}
+    <!---->
+    <div _ngcontent-c18="">
+      <div _ngcontent-c18="" class="mean-fr-word cl-blue">◆ {{mean_0}}</div>
+      <div _ngcontent-c18="" class="example-range">
+        <app-example _ngcontent-c18="" _nghost-c19="">
+          <!---->
+          <div _ngcontent-c19="" class="example-container">
+            <div _ngcontent-c19="" class="content-example">
+              <div _ngcontent-c19="" class="example-word sentence-exam cl-red">
+                <!---->
+                <div _ngcontent-c19="" class="content-word-example">
+                  <div _ngcontent-c19="" class="japanese-char inline">
+                    <!---->
+                    <ruby _ngcontent-c19="">
+                      {{examples_0_0_content}}
+                      <p _ngcontent-c19="" class="txt-romaji" ng-if="me.r"></p>
+                      <rt style="text-align: left;" _ngcontent-c19="">{{examples_0_0_transcription}}</rt>
+                    </ruby>
+                  </div>
+                </div>
+                <!---->
+              </div>
+              <div _ngcontent-c19="" class="example-mean-word sentence-exam cl-content">
+                <!----><!----><span _ngcontent-c19="">{{examples_0_0_mean}}</span>
+              </div>
+            </div>
+          </div>
+          <!---->
+        </app-example>
+      </div>
+    </div>
+  </div>
+  {{/mean_0}}
+
+<br/>
+</div>
