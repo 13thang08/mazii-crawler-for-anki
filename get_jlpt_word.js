@@ -10,27 +10,6 @@ const endOfLine = require('os').EOL;
 const csv2json = require('csvtojson');
 const Json2csvParser = require('json2csv').Parser;
 
-async function getGrammar(page) {
-  let url = 'https://mazii.net/api/search';
-  let data = {
-    "dict": "javi",
-    "type": "grammar",
-    "level": "",
-    "category": "",
-    "query": "",
-    "page": page,
-    "limit": 12
-  };
-  try {
-    let response = await helper.toPromise(helper.postRequest(url, data));
-
-    return response
-  } catch(e) {
-    // console.log(e);
-    console.log(`Error when processing: ${url}/${page}`)
-  }
-}
-
 async function getWord(word) {
   let url = 'https://mazii.net/api/search';
   let data = {
@@ -193,11 +172,11 @@ function getCsvRow(result) {
   return data;
 }
 
-async function appendCsvFile(data) {
+async function appendCsvFile(fileName, data) {
   const json2csvParser = new Json2csvParser({ fields, header: false });
   const csv = json2csvParser.parse([data]);
-  await appendFile('JLPT_N1.csv', `${endOfLine}`);
-  await appendFile('JLPT_N1.csv', csv);
+  await appendFile(fileName, csv);
+  await appendFile(fileName, `${endOfLine}`);
 }
 
 function trim(str) {
@@ -205,60 +184,41 @@ function trim(str) {
 }
 
 async function main() {
-  console.log(getKindDetail("adj-no, n, vs"));
-  return;
+  let input = [
+    'jlpt-words/N1.csv',
+    'jlpt-words/N2.csv',
+    'jlpt-words/N3.csv',
+    'jlpt-words/N4.csv',
+    'jlpt-words/N5.csv'
+  ]
 
+  for (let i = 0; i < input.length; i++) {
+    await getData(input[i]);
+  }
+}
+
+async function getData(fileName) {
+  let outputFile = `${fileName}.output.cvs`;
   // clean up
   try {
-    await unlink('JLPT_N1.csv');
+    await unlink(outputFile);
   } catch (error) {
     
   }
-  await appendCsvFile(fields);
   let inputs = await csv2json({
     noheader: true,
     output: "csv"
-  }).fromFile('./jlpt-words/Core Japanese Vocabulary__JLPT-N1.csv');
+  }).fromFile(fileName);
 
   for (let i = 0; i < inputs.length; i++) {
     let input = inputs[i];
     let word = input[0];
     let result = await getWord(word);
     let csvRow = getCsvRow(result);
-    await appendCsvFile(csvRow);
+    await appendCsvFile(outputFile, csvRow);
   }
 
   console.log(csvRow);
-}
-
-async function main2() {
-  // clean up
-  try {
-    await unlink(config.grammar_ids_file);
-  } catch (error) {
-    
-  }
-  await appendFile(config.grammar_ids_file, 'id');
-
-  let page = 1;
-  while(true) {
-    console.log(page);
-    let response = await getGrammar(page++);
-    let results = get(response, 'results');
-    if (Array.isArray(results)) {
-      for (let i = 0; i < results.length; i++) {
-        let id = results[i]._id;
-        if (id) {
-          await appendFile(config.grammar_ids_file, endOfLine);
-          await appendFile(config.grammar_ids_file, id);
-        }
-      }
-
-      continue;
-    } else {
-      break;
-    }
-  }
 }
 
 main();
@@ -495,7 +455,6 @@ function getKindDetail(kind) {
 
   if (!kind) { return ""}
   let arr = kind.split(",");
-  console.log(arr);
   return arr
   .map (x => trim(x))
   .map (x => kindTablesVi[x])
