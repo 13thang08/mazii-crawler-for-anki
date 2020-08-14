@@ -64,7 +64,7 @@ function getCsvRow(result) {
   data['word'] = trim( get(detail, 'word'));
   data['phonetic'] = trim( get(detail, 'phonetic'));
 
-  data['kind_0'] = trim( get(means, '0.kind') );
+  data['kind_0'] = getKindDetail(trim(get(means, '0.kind')));
   data['mean_0'] = trim( get(means, '0.mean') );
   data['examples_0_0_content'] = trim( get(means, '0.examples.0.content') );
   data['examples_0_0_mean'] = trim( get(means, '0.examples.0.mean') );
@@ -85,7 +85,7 @@ function getCsvRow(result) {
   data['examples_0_5_mean'] = trim( get(means, '0.examples.5.mean') );
   data['examples_0_5_transcription'] = trim( get(means, '0.examples.5.transcription') );
 
-  data['kind_1'] = trim( get(means, '1.kind') );
+  data['kind_1'] = getKindDetail(trim(get(means, '1.kind')));
   data['mean_1'] = trim( get(means, '1.mean') );
   data['examples_1_0_content'] = trim( get(means, '1.examples.0.content') );
   data['examples_1_0_mean'] = trim( get(means, '1.examples.0.mean') );
@@ -106,7 +106,7 @@ function getCsvRow(result) {
   data['examples_1_5_mean'] = trim( get(means, '1.examples.5.mean') );
   data['examples_1_5_transcription'] = trim( get(means, '1.examples.5.transcription') );
 
-  data['kind_2'] = trim( get(means, '2.kind') );
+  data['kind_2'] = getKindDetail(trim(get(means, '2.kind')));
   data['mean_2'] = trim( get(means, '2.mean') );
   data['examples_2_0_content'] = trim( get(means, '2.examples.0.content') );
   data['examples_2_0_mean'] = trim( get(means, '2.examples.0.mean') );
@@ -127,7 +127,7 @@ function getCsvRow(result) {
   data['examples_2_5_mean'] = trim( get(means, '2.examples.5.mean') );
   data['examples_2_5_transcription'] = trim( get(means, '2.examples.5.transcription') );
 
-  data['kind_3'] = trim( get(means, '3.kind') );
+  data['kind_3'] = getKindDetail(trim(get(means, '3.kind')));
   data['mean_3'] = trim( get(means, '3.mean') );
   data['examples_3_0_content'] = trim( get(means, '3.examples.0.content') );
   data['examples_3_0_mean'] = trim( get(means, '3.examples.0.mean') );
@@ -148,7 +148,7 @@ function getCsvRow(result) {
   data['examples_3_5_mean'] = trim( get(means, '3.examples.5.mean') );
   data['examples_3_5_transcription'] = trim( get(means, '3.examples.5.transcription') );
 
-  data['kind_4'] = trim( get(means, '4.kind') );
+  data['kind_4'] = getKindDetail(trim(get(means, '4.kind')));
   data['mean_4'] = trim( get(means, '4.mean') );
   data['examples_4_0_content'] = trim( get(means, '4.examples.0.content') );
   data['examples_4_0_mean'] = trim( get(means, '4.examples.0.mean') );
@@ -169,7 +169,7 @@ function getCsvRow(result) {
   data['examples_4_5_mean'] = trim( get(means, '4.examples.5.mean') );
   data['examples_4_5_transcription'] = trim( get(means, '4.examples.5.transcription') );
 
-  data['kind_5'] = trim( get(means, '5.kind') );
+  data['kind_5'] = getKindDetail(trim(get(means, '5.kind')));
   data['mean_5'] = trim( get(means, '5.mean') );
   data['examples_5_0_content'] = trim( get(means, '5.examples.0.content') );
   data['examples_5_0_mean'] = trim( get(means, '5.examples.0.mean') );
